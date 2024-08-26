@@ -1,0 +1,231 @@
+[
+  {
+    "id": 1,
+    "question": "What are the key differences between traditional education systems and modern online learning platforms in terms of accessibility and effectiveness?",
+    "generated_answers": [
+      "The cat sat on grass",
+      "He quickly ran to school",
+      "She bought a new dress",
+      "They laughed at the joke",
+      "Birds fly high in sky",
+      "Music soothes the tired soul",
+      "We enjoyed the sunny day",
+      "Books are full of knowledge",
+      "The dog barked all night",
+      "Cooking is a fun hobby"
+    ],
+    "clusters": [1, 3, 3, 0, 4, 1, 2, 3, 3, 3],
+    "perplexity": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
+    "true_answer": "The tree shades the bench"
+  },
+  {
+    "id": 2,
+    "question": "How do technological advancements in artificial intelligence impact the job market and the future of various industries globally?",
+    "generated_answers": [
+      "The sun sets in west",
+      "He loves playing with toys",
+      "She reads books every night",
+      "They went to the park",
+      "Stars twinkle in the sky",
+      "Water flows down the stream",
+      "We celebrated his birthday yesterday",
+      "Coffee is brewed every morning",
+      "Birds chirp at dawn",
+      "Jogging is good for health"
+    ],
+    "clusters": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "perplexity": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "true_answer": "Flowers bloom in spring time"
+  },
+  {
+    "id": 3,
+    "question": "What are the primary environmental challenges that need to be addressed to combat climate change effectively on a global scale?",
+    "generated_answers": [
+      "The moon glows at night",
+      "He enjoys watching movies",
+      "She dances gracefully on stage",
+      "They built a sandcastle",
+      "Clouds gather before the storm",
+      "Wind blows through the trees",
+      "We plan to visit Paris",
+      "Sunshine brightens up the day",
+      "Dogs are loyal to humans",
+      "Gardening is a relaxing hobby"
+    ],
+    "clusters": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "perplexity": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "true_answer": "The clock strikes at noon"
+  },
+  {
+    "id": 4,
+    "question": "What are the key differences between traditional education systems and modern online learning platforms in terms of accessibility and effectiveness?",
+    "generated_answers": [
+      "The cat sat on grass",
+      "He quickly ran to school",
+      "She bought a new dress",
+      "They laughed at the joke",
+      "Birds fly high in sky",
+      "Music soothes the tired soul",
+      "We enjoyed the sunny day",
+      "Books are full of knowledge",
+      "The dog barked all night",
+      "Cooking is a fun hobby"
+    ],
+    "clusters": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
+    "perplexity": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
+    "true_answer": "The tree shades the bench"
+  },
+  {
+    "id": 5,
+    "question": "How do technological advancements in artificial intelligence impact the job market and the future of various industries globally?",
+    "generated_answers": [
+      "The sun sets in west",
+      "He loves playing with toys",
+      "She reads books every night",
+      "They went to the park",
+      "Stars twinkle in the sky",
+      "Water flows down the stream",
+      "We celebrated his birthday yesterday",
+      "Coffee is brewed every morning",
+      "Birds chirp at dawn",
+      "Jogging is good for health"
+    ],
+    "clusters": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "perplexity": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "true_answer": "Flowers bloom in spring time"
+  },
+  {
+    "id": 6,
+    "question": "What are the primary environmental challenges that need to be addressed to combat climate change effectively on a global scale?",
+    "generated_answers": [
+      "The moon glows at night",
+      "He enjoys watching movies",
+      "She dances gracefully on stage",
+      "They built a sandcastle",
+      "Clouds gather before the storm",
+      "Wind blows through the trees",
+      "We plan to visit Paris",
+      "Sunshine brightens up the day",
+      "Dogs are loyal to humans",
+      "Gardening is a relaxing hobby"
+    ],
+    "clusters": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "perplexity": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "true_answer": "The clock strikes at noon"
+  },
+{
+    "id": 7,
+    "question": "What are the key differences between traditional education systems and modern online learning platforms in terms of accessibility and effectiveness?",
+    "generated_answers": [
+      "The cat sat on grass",
+      "He quickly ran to school",
+      "She bought a new dress",
+      "They laughed at the joke",
+      "Birds fly high in sky",
+      "Music soothes the tired soul",
+      "We enjoyed the sunny day",
+      "Books are full of knowledge",
+      "The dog barked all night",
+      "Cooking is a fun hobby"
+    ],
+    "clusters": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
+    "perplexity": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
+    "true_answer": "The tree shades the bench"
+  },
+  {
+    "id": 8,
+    "question": "How do technological advancements in artificial intelligence impact the job market and the future of various industries globally?",
+    "generated_answers": [
+      "The sun sets in west",
+      "He loves playing with toys",
+      "She reads books every night",
+      "They went to the park",
+      "Stars twinkle in the sky",
+      "Water flows down the stream",
+      "We celebrated his birthday yesterday",
+      "Coffee is brewed every morning",
+      "Birds chirp at dawn",
+      "Jogging is good for health"
+    ],
+    "clusters": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "perplexity": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "true_answer": "Flowers bloom in spring time"
+  },
+  {
+    "id": 9,
+    "question": "What are the primary environmental challenges that need to be addressed to combat climate change effectively on a global scale?",
+    "generated_answers": [
+      "The moon glows at night",
+      "He enjoys watching movies",
+      "She dances gracefully on stage",
+      "They built a sandcastle",
+      "Clouds gather before the storm",
+      "Wind blows through the trees",
+      "We plan to visit Paris",
+      "Sunshine brightens up the day",
+      "Dogs are loyal to humans",
+      "Gardening is a relaxing hobby"
+    ],
+    "clusters": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "perplexity": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "true_answer": "The clock strikes at noon"
+  },
+  {
+    "id": 10,
+    "question": "What are the key differences between traditional education systems and modern online learning platforms in terms of accessibility and effectiveness?",
+    "generated_answers": [
+      "The cat sat on grass",
+      "He quickly ran to school",
+      "She bought a new dress",
+      "They laughed at the joke",
+      "Birds fly high in sky",
+      "Music soothes the tired soul",
+      "We enjoyed the sunny day",
+      "Books are full of knowledge",
+      "The dog barked all night",
+      "Cooking is a fun hobby"
+    ],
+    "clusters": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
+    "perplexity": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
+    "true_answer": "The tree shades the bench"
+  },
+  {
+    "id": 11,
+    "question": "How do technological advancements in artificial intelligence impact the job market and the future of various industries globally?",
+    "generated_answers": [
+      "The sun sets in west",
+      "He loves playing with toys",
+      "She reads books every night",
+      "They went to the park",
+      "Stars twinkle in the sky",
+      "Water flows down the stream",
+      "We celebrated his birthday yesterday",
+      "Coffee is brewed every morning",
+      "Birds chirp at dawn",
+      "Jogging is good for health"
+    ],
+    "clusters": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "perplexity": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
+    "true_answer": "Flowers bloom in spring time"
+  },
+  {
+    "id": 12,
+    "question": "What are the primary environmental challenges that need to be addressed to combat climate change effectively on a global scale?",
+    "generated_answers": [
+      "The moon glows at night",
+      "He enjoys watching movies",
+      "She dances gracefully on stage",
+      "They built a sandcastle",
+      "Clouds gather before the storm",
+      "Wind blows through the trees",
+      "We plan to visit Paris",
+      "Sunshine brightens up the day",
+      "Dogs are loyal to humans",
+      "Gardening is a relaxing hobby"
+    ],
+    "clusters": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "perplexity": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
+    "true_answer": "The clock strikes at noon"
+  }
+]
+
