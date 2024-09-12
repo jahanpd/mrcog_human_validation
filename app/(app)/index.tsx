@@ -1,7 +1,5 @@
 import { Text, View, ScrollView, Button, StyleSheet, Dimensions } from "react-native";
-import data from '../assets/sample.json';
-import clinicians from '../assets/clinicians.json';
-import { QuestionWrapper } from '../components/Question';
+import clinicians from '../../assets/clinicians.json';
 import Questions from './questions';
 import React, {useState, useEffect} from 'react';
 import SelectDropdown from 'react-native-select-dropdown'

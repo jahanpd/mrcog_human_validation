@@ -1,9 +1,12 @@
-import { Stack } from "expo-router";
+import { Slot } from 'expo-router';
+import { SessionProvider } from '../ctx';
 
-export default function RootLayout() {
+export default function Root() {
+  // Set up the auth context and render our layout inside of it.
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{title:"MRCOG/GPT Human Validation"}}/>
-    </Stack>
+    <SessionProvider>
+      <Slot />
+    </SessionProvider>
   );
 }
+

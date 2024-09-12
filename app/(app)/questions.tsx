@@ -1,12 +1,48 @@
 import { Text, View, ScrollView, Button, StyleSheet, Dimensions } from "react-native";
-import clinicians from '../assets/clinicians.json';
-import data from '../assets/sample.json';
-import { QuestionWrapper } from '../components/Question';
+import clinicians from '../../assets/clinicians.json';
+import encrypted from '../../assets/encrypted.json';
+import { QuestionWrapper } from '../../components/Question';
 import React, {useState, useEffect} from 'react';
+import AES256 from 'aes-everywhere'
+import { useSession } from '../../ctx';
+import { router } from 'expo-router';
 
+const decryptData = (enc, key) => {
+  try {
+			return JSON.parse(AES256.decrypt(enc, key))
+	} catch {
+			return ''
+	}
+}
 
 export default function Questions(params) {
 
+  const { signOut } = useSession();
+  const { session, isLoading } = useSession();
+  
+	const data = decryptData(encrypted, session)
+
+	if (!data) {
+		return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text
+			  style={{padding: 10}}
+        >
+        Secret key used to sign in is incorrect. Unable to parse question bank.
+      </Text>
+      <Text
+			  style={{padding: 10}}
+        onPress={() => {
+          signOut();
+          // Navigate after signing in. You may want to tweak this to ensure sign-in is
+          // successful before navigating.
+          router.replace('/sign-in');
+        }}>
+        Sign Out
+      </Text>
+    </View>
+		)
+	}
   const who = params.who;
   const setWho = params.setWho;
 	const response = params.response;
