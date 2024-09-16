@@ -177,7 +177,8 @@ export function QuestionWrapper(params: Params) {
 										}}>
 										  Generated Answers:</Text>
 									  <Text style={{
-												fontStyle:"italic"
+												fontStyle:"italic",
+												paddingBottom: 10
 										}}>
 										  Grouped by semantic meaning</Text>
 								    <ScrollView
