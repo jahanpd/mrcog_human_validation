@@ -83,7 +83,6 @@ export default function Questions(params) {
 			</View>
 			<ScrollView
 			 style={{
-				flexGrow: 1,
 				flexDirection: "column",
 				maxWidth:600,
 				paddingBottom:100
