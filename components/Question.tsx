@@ -51,6 +51,8 @@ export function QuestionWrapper(params: Params) {
 		// sort answers into clusters
 		const min_cluster = Math.min(...params.data.clusters);
 		const max_cluster = Math.max(...params.data.clusters);
+		let gpt_correct_group_length = 0;
+		let gpt_correct_group = 99;
 		const clusters = [];
 		for (let i = min_cluster; i <= max_cluster; i++) {
 				const cluster = {
@@ -66,15 +68,18 @@ export function QuestionWrapper(params: Params) {
 				}
 				if (cluster.answers.length > 0) {
 						clusters.push(cluster);
+						if (cluster.answers.length > gpt_correct_group_length) {
+							gpt_correct_group = cluster.id
+							gpt_correct_group_length = cluster.answers.length
+						}
 				}
 		}
 
-		clusters.sort((a, b) => b.answers.length - a.answers.length)
+		// clusters.sort((a, b) => b.answers.length - a.answers.length)
 
 		// get lowest perplexity answer
 		let min_perp = 999999999999999999;
 		let perp_answer = "";
-		let gpt_correct_group = clusters[0].id;
 		for (let i in params.data.perplexity) {
 				if (params.data.perplexity[i] < min_perp) {
 						min_perp = params.data.perplexity[i];
@@ -174,12 +179,7 @@ export function QuestionWrapper(params: Params) {
 									  <Text style={{
 												fontStyle:"italic"
 										}}>
-										  Grouped by semantic meaning, AND</Text>
-									  <Text style={{
-												fontStyle:"italic",
-												paddingBottom:10
-										}}>
-										  Ranked by group size (largest/top -> smallest/bottom)</Text>
+										  Grouped by semantic meaning</Text>
 								    <ScrollView
 								      style={{
 														height:"100%"
