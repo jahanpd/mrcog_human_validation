@@ -310,12 +310,12 @@ export function QuestionWrapper(params: Params) {
 									onPress={() => setModalVisible(!modalVisible)}>
 									<View
 									  style={{
-												flex: 1,
 												flexDirection:"row",
 												borderWidth:1,
-												marginVertical:10,
+												margin:5,
 												padding:5,
-												width:"90%"
+												width:"90%",
+												height:40
 										}}>
 												<Text
 													style={{
@@ -325,6 +325,7 @@ export function QuestionWrapper(params: Params) {
 												</Text>
 
 												<Text
+													numberOfLines={1}
 													style={{
 															width:"90%"
 													}}>

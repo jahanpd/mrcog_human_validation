@@ -9,8 +9,10 @@ import { router } from 'expo-router';
 
 const decryptData = (enc, key) => {
   try {
+	  console.log("Pre parse", AES256.decrypt(enc, key))
 			return JSON.parse(AES256.decrypt(enc, key))
-	} catch {
+	} catch (error) {
+		    console.log(error)
 			return ''
 	}
 }
@@ -21,6 +23,7 @@ export default function Questions(params) {
   const { session, isLoading } = useSession();
   
 	const data = decryptData(encrypted, session)
+	console.log("post decryption data", data)
 
 	if (!data) {
 		return (
@@ -83,7 +86,6 @@ export default function Questions(params) {
 			</View>
 			<ScrollView
 			 style={{
-				flexGrow: 1,
 				flexDirection: "column",
 				maxWidth:600,
 				paddingBottom:100
@@ -97,7 +99,7 @@ export default function Questions(params) {
 													answered={response} 
 													filtered={filtered}
 													setFiltered={setFiltered}
-												  supabase={supabase}
+												    supabase={supabase}
 											/>)
 					 }) }
 			</ScrollView>
