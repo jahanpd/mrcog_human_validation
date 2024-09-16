@@ -72,13 +72,13 @@ export function QuestionWrapper(params: Params) {
 		clusters.sort((a, b) => b.answers.length - a.answers.length)
 
 		// get lowest perplexity answer
-		let min_perp = 99999999999999;
+		let min_perp = 999999999999999999;
 		let perp_answer = "";
 		let gpt_correct_group = clusters[0].id;
-		for (let i in clusters[0].perplexity) {
-				if (clusters[0].perplexity[i] < min_perp) {
-						min_perp = clusters[0].perplexity[i];
-						perp_answer = clusters[0].answers[i];
+		for (let i in params.data.perplexity) {
+				if (params.data.perplexity[i] < min_perp) {
+						min_perp = params.data.perplexity[i];
+						perp_answer = params.data.generated_answers[i];
 				}
 		}
 
@@ -200,7 +200,7 @@ export function QuestionWrapper(params: Params) {
 																			<View style={{
 																					flexDirection: "column"
 																			}}>
-																			{cluster.answers.map( (ans, jdx) => {
+																			{[... new Set(cluster.answers)].map( (ans, jdx) => {
 																				return (
 																						<Text style={{paddingBottom: 2}}key={idx + "i" + jdx}>- {ans}</Text>
 																				)
@@ -224,7 +224,7 @@ export function QuestionWrapper(params: Params) {
 														paddingBottom:5
 										}}
 										>
-												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>GPT answer is correct</Text>
+												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>GPT answer is correct ({PerpCorrect ? "Yes" : "No"}):</Text>
 												<Switch 
 													value={PerpCorrect} 
 													onValueChange={() => setPerpCorrect(!PerpCorrect)}/>
@@ -269,7 +269,7 @@ export function QuestionWrapper(params: Params) {
 														paddingBottom:5
 										}}
 										>
-												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>Each Group Contains Answers with the Same Meaning:</Text>
+												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>Each Group Contains Answers with the Same Meaning ({clusterCorrect ? "Yes" : "No"}):</Text>
 												<Switch 
 													value={clusterCorrect} 
 													onValueChange={() => setClusterCorrect(!clusterCorrect)}/>
@@ -312,8 +312,8 @@ export function QuestionWrapper(params: Params) {
 									  style={{
 												flexDirection:"row",
 												borderWidth:1,
-												margin:5,
 												padding:5,
+												margin:5,
 												width:"90%",
 												height:40
 										}}>
