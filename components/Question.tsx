@@ -224,7 +224,7 @@ export function QuestionWrapper(params: Params) {
 														paddingBottom:5
 										}}
 										>
-												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>GPT answer is correct</Text>
+												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>GPT answer is correct ({PerpCorrect ? "Yes" : "No"}):</Text>
 												<Switch 
 													value={PerpCorrect} 
 													onValueChange={() => setPerpCorrect(!PerpCorrect)}/>
@@ -269,7 +269,7 @@ export function QuestionWrapper(params: Params) {
 														paddingBottom:5
 										}}
 										>
-												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>Each Group Contains Answers with the Same Meaning:</Text>
+												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>Each Group Contains Answers with the Same Meaning ({clusterCorrect ? "Yes" : "No"}):</Text>
 												<Switch 
 													value={clusterCorrect} 
 													onValueChange={() => setClusterCorrect(!clusterCorrect)}/>
