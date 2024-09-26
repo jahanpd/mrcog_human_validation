@@ -1,7 +1,8 @@
 import {Alert, Modal, Text, StyleSheet, Pressable, Button, View, ScrollView, Switch} from 'react-native';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, Dispatch, SetStateAction} from 'react';
 import { SupabaseClient } from '@supabase/supabase-js';
 import SelectDropdown from 'react-native-select-dropdown';
+import { CheckBox } from '@rneui/themed';
 
 type Data = {
 		question: string,
@@ -21,6 +22,19 @@ type Params = {
 		setFiltered: any
 }
 
+type Cluster = {
+		id: number,
+		answers: string[],
+		perplexity: number[],
+		correct: boolean,
+		setCorrect: Dispatch<SetStateAction<boolean>>,
+		consistent: boolean,
+		setConsistent: Dispatch<SetStateAction<boolean>>
+}
+
+type Checks = {
+		[key: number]: CheckState
+}
 const colors = {
 	"lime":"#65a30d",
 	"teal":"#115e59",
@@ -39,8 +53,6 @@ const color_keys = Object.keys(colors);
 export function QuestionWrapper(params: Params) {
 		const [modalVisible, setModalVisible] = useState(false);
 		const [alertVisible, setAlertVisible] = useState(false);
-		const [seCorrect, setSECorrect] = useState(-1);
-		const [clusterCorrect, setClusterCorrect] = useState(false);
 		const [PerpCorrect, setPerpCorrect] = useState(false);
 
 
@@ -49,16 +61,30 @@ export function QuestionWrapper(params: Params) {
 		const supabase = params.supabase
 
 		// sort answers into clusters
+<<<<<<< HEAD
 		const min_cluster = Math.min(...params.data.clusters);
 		const max_cluster = Math.max(...params.data.clusters);
 		let gpt_correct_group_length = 0;
 		let gpt_correct_group = 99;
 		const clusters = [];
+=======
+		const min_cluster = 1;
+		const max_cluster = 12;
+		let gpt_correct_group_length = 0;
+		let gpt_correct_group = 99;
+		const clusters: Cluster[] = [];
+>>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 		for (let i = min_cluster; i <= max_cluster; i++) {
-				const cluster = {
+				const [clusterCorrect, setClusterCorrect] = React.useState<boolean>(false)
+				const [clusterConsistent, setClusterConsistent] = React.useState<boolean>(false)
+				const cluster: Cluster = {
 						"id": i,
 						"answers": [],
-						"perplexity": []
+						"perplexity": [],
+						"correct": clusterCorrect,
+						"setCorrect": setClusterCorrect,
+						"consistent": clusterConsistent,
+						"setConsistent": setClusterConsistent
 				}
 				for (let j in params.data.clusters) {
 						if (i == params.data.clusters[j]) {
@@ -73,9 +99,13 @@ export function QuestionWrapper(params: Params) {
 							gpt_correct_group_length = cluster.answers.length
 						}
 				}
+<<<<<<< HEAD
 		}
 
 		// clusters.sort((a, b) => b.answers.length - a.answers.length)
+=======
+		}		
+>>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 
 		// get lowest perplexity answer
 		let min_perp = 999999999999999999;
@@ -87,20 +117,39 @@ export function QuestionWrapper(params: Params) {
 				}
 		}
 
+
+
 		const submitAlert = () => {
-				console.log("group", seCorrect)
-				if (seCorrect < 0) {
-						alert("Choose a Group!");
-						return
+				// check if only one group correct
+				// if all groups false or more than one then no correct group
+				let group: number | null = null
+				let clusterCorrect= false
+				const group_correct_raw = clusters.map( cluster => [cluster.id, cluster.correct])
+				const group_consistent_raw = clusters.map(cluster => [cluster.id, cluster.consistent])
+
+				const number_correct = group_correct_raw.filter((val) => val[1])
+				console.log(number_correct)
+				
+				if (number_correct.length == 1) {
+						group = number_correct[0][0]
 				}
+				if (!group_consistent_raw.map(val => val[1]).every(el => el) ) {
+						clusterCorrect = true
+				}
+				if (number_correct.length > 1) {
+						clusterCorrect = false
+				}
+				
 				supabase
 					.from('responses_test')
 					.insert({
 							clinician: clinician_id, 
 							question_id: qid,
-							gpt_correct: PerpCorrect, // if lowest perp answer in largest group correct
-							gpt_correct_group: gpt_correct_group, // the group id of the gpt answer
-							group_correct: seCorrect, // the label of the group with the most correct answers
+							gpt_correct: PerpCorrect, // if lowest perp answer is correct
+							gpt_correct_group: gpt_correct_group, // the group id of the gpt answer ie max number values
+							group_correct: group, // the label of the group with the correct answers as per clinician - nullable
+							group_correct_raw: JSON.stringify(group_correct_raw),
+							group_consistent_raw: JSON.stringify(group_consistent_raw),
 							se_clustering_correct: clusterCorrect // are the groups correctly matched by meaning
 					})
 					.then(res => {
@@ -110,9 +159,13 @@ export function QuestionWrapper(params: Params) {
 									console.log("check push", params.answered)
 									params.answered.push(qid);
 									params.setFiltered(params.filtered.filter(qn => !params.answered.includes(qn.id)))
-									setSECorrect(-1);
 								  setAlertVisible(false);
 								  setModalVisible(!modalVisible);
+									setPerpCorrect(false);
+									clusters.map(cluster => {
+											cluster.setConsistent(false)
+											cluster.setCorrect(false)
+									})
 									console.log(params.answered)
 									console.log(params.filtered)
 							} else {
@@ -163,24 +216,57 @@ export function QuestionWrapper(params: Params) {
 									  <Text style={{fontWeight:"bold"}}>Correct Answer:</Text>
 										<Text
 											style={{
-													paddingBottom:5
+													paddingBottom:10,
 											}}>
 										{params.data.true_answer}</Text>
-									  <Text style={{fontWeight:"bold"}}>GPT Answer:</Text>
-										<Text
-											style={{
-													paddingBottom:5
-											}}>
-										{perp_answer}</Text>
+										<View style={{flexDirection: "row", justifyContent:"space-between"}}>
+												<View style={{flexDirection: "column"}}>
+														<Text style={{fontWeight:"bold"}}>Most Confident Answer:</Text>
+														<Text
+															style={{
+																	paddingBottom:5,
+																	justifyContent: 'center', //Centered vertically
+																	verticalAlign:"middle"
+															}}>
+														{perp_answer}</Text>
+												</View>
+													<CheckBox 
+														containerStyle={{padding:0}}
+														checked={PerpCorrect} 
+														title="Correct" 
+														onPress={() => {
+																setPerpCorrect(!PerpCorrect)
+														}}
+													/>
+										</View>
 									  <Text style={{
 												fontWeight:"bold",
 										}}>
-										  Generated Answers:</Text>
+										  Generated Answer Groups:</Text>
 									  <Text style={{
+<<<<<<< HEAD
+=======
+												fontStyle:"italic"
+										}}>
+										  Answers are grouped by meaning.</Text>
+									  <Text style={{
+												fontStyle:"italic",
+										}}>
+										  Please assess each group and decide if the answers in each group are:</Text>
+									  <Text style={{
+												fontStyle:"italic",
+										}}>
+										  1. All correct, and</Text>
+									  <Text style={{
+>>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 												fontStyle:"italic",
 												paddingBottom: 10
 										}}>
+<<<<<<< HEAD
 										  Grouped by semantic meaning</Text>
+=======
+										  2. All have a consistent meaning</Text>
+>>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 								    <ScrollView
 								      style={{
 														height:"100%"
@@ -199,6 +285,7 @@ export function QuestionWrapper(params: Params) {
 																	}}>
 																	    <Text style={{paddingRight:10, fontWeight:"bold"}}>Group {cluster.id}:</Text>
 																			<View style={{
+																					flex:1,
 																					flexDirection: "column"
 																			}}>
 																			{[... new Set(cluster.answers)].map( (ans, jdx) => {
@@ -207,6 +294,28 @@ export function QuestionWrapper(params: Params) {
 																				)
 																			})}
 																			</View>
+
+																			<View style={{flexDirection: "column"}}>
+																					<CheckBox 
+																					  containerStyle={{padding:0}}
+																					  checked={cluster.correct} 
+																						title="Correct" 
+																						onPress={() => {
+																								cluster.setCorrect(!cluster.correct)
+																						}}
+																				  />
+																					<CheckBox 
+																					  containerStyle={{padding:0}}
+																					  checked={cluster.consistent} 
+																						title="Consistent Meaning" 
+																						onPress={() => {
+																								cluster.setConsistent(!cluster.consistent)
+																						}}
+
+																				  />
+																			  
+																			</View>
+
 																	</View>
 																</View>
 														) })}
@@ -219,62 +328,6 @@ export function QuestionWrapper(params: Params) {
 												paddingBottom:10
 										}}
 									>
-									  <View 
-												style={{
-														flexDirection:"row",
-														paddingBottom:5
-										}}
-										>
-												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>GPT answer is correct ({PerpCorrect ? "Yes" : "No"}):</Text>
-												<Switch 
-													value={PerpCorrect} 
-													onValueChange={() => setPerpCorrect(!PerpCorrect)}/>
-										</View>
-									  <View 
-												style={{
-														flexDirection:"row",
-														paddingBottom:5
-										}}
-										>
-												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>Which group contains the most correct answers :</Text>
-													<SelectDropdown 
-													data={clusters}
-							  					onSelect={(selectedItem, index) => {
-														setSECorrect(selectedItem.id)
-														}}
-												  renderButton={(selectedItem, isOpen) => {
-																	return (
-																		<View style={styles.dropdown1ButtonStyle}>
-																			<Text style={styles.dropdown1ButtonTxtStyle}>
-																				{(selectedItem && `${selectedItem.id}`) || 'Select Group'}
-																			</Text>
-																		</View>
-																	);
-																}}
-							  					renderItem={(item, index, isSelected) => {
-															return (
-																<View
-																	style={{
-																		...styles.dropdown1ItemStyle,
-																		...({backgroundColor: 'grey'}),
-																	}}>
-																	<Text style={styles.dropdown1ItemTxtStyle}>{item.id}</Text>
-																</View>
-															);
-														}}
-													/>
-										</View>
-									  <View 
-												style={{
-														flexDirection:"row",
-														paddingBottom:5
-										}}
-										>
-												<Text style={{fontWeight:"bold", width:"80%", paddingRight: 20}}>Each Group Contains Answers with the Same Meaning ({clusterCorrect ? "Yes" : "No"}):</Text>
-												<Switch 
-													value={clusterCorrect} 
-													onValueChange={() => setClusterCorrect(!clusterCorrect)}/>
-										</View>
 									</View>
 									<View 
 									  style={{
