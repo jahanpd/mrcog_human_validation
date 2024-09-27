@@ -26,10 +26,10 @@ type Cluster = {
 		id: number,
 		answers: string[],
 		perplexity: number[],
-		correct: boolean,
-		setCorrect: Dispatch<SetStateAction<boolean>>,
-		consistent: boolean,
-		setConsistent: Dispatch<SetStateAction<boolean>>
+		correct: boolean | null,
+		setCorrect: Dispatch<SetStateAction<boolean>> | null,
+		consistent: boolean | null,
+		setConsistent: Dispatch<SetStateAction<boolean>> | null
 }
 
 type Checks = {
@@ -54,6 +54,7 @@ export function QuestionWrapper(params: Params) {
 		const [modalVisible, setModalVisible] = useState(false);
 		const [alertVisible, setAlertVisible] = useState(false);
 		const [PerpCorrect, setPerpCorrect] = useState(false);
+		const [allUnique, setAllUnique] = useState(false);
 
 
 		const qid = params.data.id;
@@ -67,16 +68,14 @@ export function QuestionWrapper(params: Params) {
 		let gpt_correct_group = 99;
 		const clusters: Cluster[] = [];
 		for (let i = min_cluster; i <= max_cluster; i++) {
-				const [clusterCorrect, setClusterCorrect] = React.useState<boolean>(false)
-				const [clusterConsistent, setClusterConsistent] = React.useState<boolean>(false)
 				const cluster: Cluster = {
 						"id": i,
 						"answers": [],
 						"perplexity": [],
-						"correct": clusterCorrect,
-						"setCorrect": setClusterCorrect,
-						"consistent": clusterConsistent,
-						"setConsistent": setClusterConsistent
+						"correct": null,
+						"setCorrect": null,
+						"consistent": null,
+						"setConsistent": null
 				}
 				for (let j in params.data.clusters) {
 						if (i == params.data.clusters[j]) {
@@ -84,6 +83,13 @@ export function QuestionWrapper(params: Params) {
 								cluster.perplexity.push(params.data.perplexity[j]);
 						}
 				}
+				const [clusterCorrect, setClusterCorrect] = React.useState<boolean>(false)
+				const [clusterConsistent, setClusterConsistent] = React.useState<boolean>(cluster.answers.length === 1)
+				cluster.correct = clusterCorrect
+				cluster.setCorrect = setClusterCorrect
+				cluster.consistent = clusterConsistent
+				cluster.setConsistent = setClusterConsistent
+
 				if (cluster.answers.length > 0) {
 						clusters.push(cluster);
 						if (cluster.answers.length > gpt_correct_group_length) {
@@ -136,7 +142,8 @@ export function QuestionWrapper(params: Params) {
 							group_correct: group, // the label of the group with the correct answers as per clinician - nullable
 							group_correct_raw: JSON.stringify(group_correct_raw),
 							group_consistent_raw: JSON.stringify(group_consistent_raw),
-							se_clustering_correct: clusterCorrect // are the groups correctly matched by meaning
+							se_clustering_correct: clusterCorrect, // are the groups correctly matched by meaning
+							entailment_success: allUnique
 					})
 					.then(res => {
 							console.log(res);
@@ -199,7 +206,7 @@ export function QuestionWrapper(params: Params) {
 											}}
 										>{params.data.question}</Text>
 
-									  <Text style={{fontWeight:"bold"}}>Correct Answer:</Text>
+									  <Text style={{fontWeight:"bold"}}>The True Answer:</Text>
 										<Text
 											style={{
 													paddingBottom:10,
@@ -207,7 +214,7 @@ export function QuestionWrapper(params: Params) {
 										{params.data.true_answer}</Text>
 										<View style={{flexDirection: "row", justifyContent:"space-between"}}>
 												<View style={{flexDirection: "column"}}>
-														<Text style={{fontWeight:"bold"}}>Most Confident Answer:</Text>
+														<Text style={{fontWeight:"bold"}}>The Most Confident GPT Answer:</Text>
 														<Text
 															style={{
 																	paddingBottom:5,
@@ -217,9 +224,9 @@ export function QuestionWrapper(params: Params) {
 														{perp_answer}</Text>
 												</View>
 													<CheckBox 
-														containerStyle={{padding:0}}
+														containerStyle={{padding:5, borderColor: "red", borderWidth: 3}}
 														checked={PerpCorrect} 
-														title="Correct" 
+														title="Is this answer correct?" 
 														onPress={() => {
 																setPerpCorrect(!PerpCorrect)
 														}}
@@ -251,6 +258,9 @@ export function QuestionWrapper(params: Params) {
 														height:"100%"
 												}}>
 												{clusters.map((cluster, idx) => {
+
+														const only_one = cluster.answers.length === 1
+
 														return (
 																<View style={{
 																		marginBottom:20,
@@ -284,6 +294,7 @@ export function QuestionWrapper(params: Params) {
 																						}}
 																				  />
 																					<CheckBox 
+																					  disabled={only_one}
 																					  containerStyle={{padding:0}}
 																					  checked={cluster.consistent} 
 																						title="Consistent Meaning" 
@@ -304,9 +315,28 @@ export function QuestionWrapper(params: Params) {
 									  style={{
 												flexDirection:"column",
 												justifyContent: 'space-between',
-												paddingBottom:10
+												paddingBottom:10,
+												paddingTop:20
 										}}
 									>
+										<View style={{flexDirection: "row", justifyContent:"space-between"}}>
+												<View style={{flexDirection: "column"}}>
+														<Text style={{fontWeight:"bold"}}>Are all groups unique?</Text>
+														<Text style={{
+																fontStyle:"italic",
+																paddingBottom:10
+														}}>
+															This is false if any two or more groups have the same meaning. </Text>
+												</View>
+													<CheckBox 
+														containerStyle={{padding:0}}
+														checked={allUnique} 
+														title="All Unique" 
+														onPress={() => {
+																setAllUnique(!allUnique)
+														}}
+													/>
+										</View>
 									</View>
 									<View 
 									  style={{
