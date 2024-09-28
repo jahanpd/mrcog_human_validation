@@ -1,7 +1,6 @@
 import {Alert, Modal, Text, StyleSheet, Pressable, Button, View, ScrollView, Switch} from 'react-native';
 import React, {useState, useContext, Dispatch, SetStateAction} from 'react';
 import { SupabaseClient } from '@supabase/supabase-js';
-import SelectDropdown from 'react-native-select-dropdown';
 import { CheckBox } from '@rneui/themed';
 
 type Data = {
@@ -32,9 +31,6 @@ type Cluster = {
 		setConsistent: Dispatch<SetStateAction<boolean>>
 }
 
-type Checks = {
-		[key: number]: CheckState
-}
 const colors = {
 	"lime":"#65a30d",
 	"teal":"#115e59",
@@ -61,19 +57,11 @@ export function QuestionWrapper(params: Params) {
 		const supabase = params.supabase
 
 		// sort answers into clusters
-<<<<<<< HEAD
-		const min_cluster = Math.min(...params.data.clusters);
-		const max_cluster = Math.max(...params.data.clusters);
-		let gpt_correct_group_length = 0;
-		let gpt_correct_group = 99;
-		const clusters = [];
-=======
 		const min_cluster = 1;
 		const max_cluster = 12;
 		let gpt_correct_group_length = 0;
 		let gpt_correct_group = 99;
 		const clusters: Cluster[] = [];
->>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 		for (let i = min_cluster; i <= max_cluster; i++) {
 				const [clusterCorrect, setClusterCorrect] = React.useState<boolean>(false)
 				const [clusterConsistent, setClusterConsistent] = React.useState<boolean>(false)
@@ -99,13 +87,7 @@ export function QuestionWrapper(params: Params) {
 							gpt_correct_group_length = cluster.answers.length
 						}
 				}
-<<<<<<< HEAD
-		}
-
-		// clusters.sort((a, b) => b.answers.length - a.answers.length)
-=======
 		}		
->>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 
 		// get lowest perplexity answer
 		let min_perp = 999999999999999999;
@@ -244,8 +226,6 @@ export function QuestionWrapper(params: Params) {
 										}}>
 										  Generated Answer Groups:</Text>
 									  <Text style={{
-<<<<<<< HEAD
-=======
 												fontStyle:"italic"
 										}}>
 										  Answers are grouped by meaning.</Text>
@@ -258,15 +238,10 @@ export function QuestionWrapper(params: Params) {
 										}}>
 										  1. All correct, and</Text>
 									  <Text style={{
->>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 												fontStyle:"italic",
 												paddingBottom: 10
 										}}>
-<<<<<<< HEAD
-										  Grouped by semantic meaning</Text>
-=======
 										  2. All have a consistent meaning</Text>
->>>>>>> 4f0a0d50b33a3932cf2a6ea224760eda8c8b0169
 								    <ScrollView
 								      style={{
 														height:"100%"
