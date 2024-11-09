@@ -47,9 +47,19 @@ const colors = {
 const color_keys = Object.keys(colors);
 
 export function QuestionWrapper(params: Params) {
+		// get lowest perplexity answer
+		let min_perp = 999999999999999999;
+		let perp_answer = "";
+		for (let i in params.data.perplexity) {
+				if (params.data.perplexity[i] < min_perp) {
+						min_perp = params.data.perplexity[i];
+						perp_answer = params.data.generated_answers[i];
+				}
+		}
+
 		const [modalVisible, setModalVisible] = useState(false);
 		const [alertVisible, setAlertVisible] = useState(false);
-		const [PerpCorrect, setPerpCorrect] = useState(false);
+		const [PerpCorrect, setPerpCorrect] = useState(perp_answer === params.data.true_answer);
 		const [allUnique, setAllUnique] = useState(false);
 
 
@@ -58,7 +68,7 @@ export function QuestionWrapper(params: Params) {
 		const supabase = params.supabase
 
 		// sort answers into clusters
-		const min_cluster = 1;
+		const min_cluster = 0;
 		const max_cluster = 12;
 		let gpt_correct_group_length = 0;
 		let gpt_correct_group = 99;
@@ -95,15 +105,6 @@ export function QuestionWrapper(params: Params) {
 				}
 		}		
 
-		// get lowest perplexity answer
-		let min_perp = 999999999999999999;
-		let perp_answer = "";
-		for (let i in params.data.perplexity) {
-				if (params.data.perplexity[i] < min_perp) {
-						min_perp = params.data.perplexity[i];
-						perp_answer = params.data.generated_answers[i];
-				}
-		}
 
 
 
@@ -220,9 +221,13 @@ export function QuestionWrapper(params: Params) {
 														{perp_answer}</Text>
 												</View>
 													<CheckBox 
-														containerStyle={{padding:5, borderColor: "red", borderWidth: 3}}
+														containerStyle={{
+															padding:5, 
+															borderColor: "red", 
+															borderWidth: perp_answer === params.data.true_answer ? 0 : 3}}
 														checked={PerpCorrect} 
 														title="Is this answer correct?" 
+														disabled={perp_answer === params.data.true_answer}
 														onPress={() => {
 																setPerpCorrect(!PerpCorrect)
 														}}
@@ -235,7 +240,7 @@ export function QuestionWrapper(params: Params) {
 									  <Text style={{
 												fontStyle:"italic"
 										}}>
-										  Answers are grouped by meaning.</Text>
+										  Answers are grouped by GPT according to meaning.</Text>
 									  <Text style={{
 												fontStyle:"italic",
 										}}>
@@ -273,7 +278,7 @@ export function QuestionWrapper(params: Params) {
 																					flex:1,
 																					flexDirection: "column"
 																			}}>
-																			{[... new Set(cluster.answers)].map( (ans, jdx) => {
+																			{cluster.answers.map( (ans, jdx) => {
 																				return (
 																						<Text style={{paddingBottom: 2}}key={idx + "i" + jdx}>- {ans}</Text>
 																				)
@@ -284,7 +289,7 @@ export function QuestionWrapper(params: Params) {
 																					<CheckBox 
 																					  containerStyle={{padding:0}}
 																					  checked={cluster.correct} 
-																						title="Correct" 
+																						title="All Correct" 
 																						onPress={() => {
 																								cluster.setCorrect(!cluster.correct)
 																						}}
