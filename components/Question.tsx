@@ -54,6 +54,7 @@ export function QuestionWrapper(params: Params) {
 		const [modalVisible, setModalVisible] = useState(false);
 		const [alertVisible, setAlertVisible] = useState(false);
 		const [PerpCorrect, setPerpCorrect] = useState(false);
+		const [PerpCorrectButDifferent, setPerpCorrectButDifferent] = useState(false);
 		const [allUnique, setAllUnique] = useState(false);
 
 
