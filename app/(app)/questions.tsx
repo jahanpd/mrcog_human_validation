@@ -55,11 +55,27 @@ export default function Questions(params) {
 
 	console.log("response", response)
   console.log("supabase", response)
-	const [filtered, setFiltered] = useState(data.filter(qn => !response.includes(qn.id)));
+	const [filtered, setFiltered] = useState(
+			data
+			  .filter(qn => !response.includes(qn.id))
+				.filter(qn => {
+						console.log(qn, !qn.clinician);
+						if ([114, 115].includes(who)) return true
+						return qn.clinician === who
+				})
+	);
+	console.log("CHECK", who)
 	console.log(filtered)
 
 	useEffect(() => {
-			setFiltered(data.filter(qn => !response.includes(qn.id)))
+			setFiltered(
+					data
+					.filter(qn => !response.includes(qn.id))
+				  .filter(qn => {
+						if ([114, 115].includes(who)) return true
+						return qn.clinician === who
+				  })
+			)
   }, [response]);
 
 	return (

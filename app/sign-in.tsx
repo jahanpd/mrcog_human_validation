@@ -11,13 +11,13 @@ export default function SignIn() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 		  <TextInput
-						style={{padding: 10, width: 300}}
+						style={{padding: 10, width: 300, borderWidth: 1, borderRadius: 10}}
 						onChangeText={setKey}
 						value={key}
 						placeholder="input secure authentication key here"
 					/>
       <Text
-			  style={{padding: 10}}
+			  style={{marginTop: 10, padding: 10, paddingHorizontal: 20, backgroundColor: "#f1f5f9", borderRadius:10}}
         onPress={() => {
           signIn(key);
           // Navigate after signing in. You may want to tweak this to ensure sign-in is

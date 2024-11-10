@@ -16,7 +16,8 @@
     ],
     "clusters": [1, 3, 3, 0, 4, 1, 2, 3, 3, 3],
     "perplexity": [1, 2, 3, 0, 4, 1, 2, 3, 0, 5],
-    "true_answer": "The tree shades the bench"
+    "true_answer": "The tree shades the bench",
+		"clinician": 111
   },
   {
     "id": 2,
@@ -35,7 +36,8 @@
     ],
     "clusters": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
     "perplexity": [0, 1, 2, 3, 4, 5, 1, 0, 2, 4],
-    "true_answer": "Flowers bloom in spring time"
+    "true_answer": "Flowers bloom in spring time",
+		"clinician": 112
   },
   {
     "id": 3,
@@ -54,7 +56,8 @@
     ],
     "clusters": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
     "perplexity": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
-    "true_answer": "The clock strikes at noon"
+    "true_answer": "The clock strikes at noon",
+		"clinician": 113
   },
   {
     "id": 4,
