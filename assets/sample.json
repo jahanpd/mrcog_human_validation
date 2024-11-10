@@ -56,7 +56,8 @@
     ],
     "clusters": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
     "perplexity": [1, 2, 0, 4, 3, 5, 0, 2, 3, 1],
-    "true_answer": "The clock strikes at noon"
+    "true_answer": "The clock strikes at noon",
+		"clinician": 113
   },
   {
     "id": 4,

@@ -60,7 +60,7 @@ export default function Questions(params) {
 			  .filter(qn => !response.includes(qn.id))
 				.filter(qn => {
 						console.log(qn, !qn.clinician);
-						if (!qn.clinician) {return true};
+						if ([114, 115].includes(who)) return true
 						return qn.clinician === who
 				})
 	);
@@ -72,8 +72,7 @@ export default function Questions(params) {
 					data
 					.filter(qn => !response.includes(qn.id))
 				  .filter(qn => {
-						console.log(qn, !qn.clinician);
-						if (!qn.clinician) {return true};
+						if ([114, 115].includes(who)) return true
 						return qn.clinician === who
 				  })
 			)

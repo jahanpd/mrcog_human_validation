@@ -57,10 +57,11 @@ export function QuestionWrapper(params: Params) {
 				}
 		}
 
+		const perp_correct_init = perp_answer === params.data.true_answer;
 		const [modalVisible, setModalVisible] = useState(false);
 		const [alertVisible, setAlertVisible] = useState(false);
-		const [PerpCorrect, setPerpCorrect] = useState(false);
-		const [PerpCorrectButDifferent, setPerpCorrectButDifferent] = useState(false);
+		const [PerpCorrect, setPerpCorrect] = useState<boolean>(perp_correct_init);
+		const [PerpCorrectButDifferent, setPerpCorrectButDifferent] = useState<boolean>(false);
 		const [allUnique, setAllUnique] = useState(false);
 
 
@@ -136,6 +137,7 @@ export function QuestionWrapper(params: Params) {
 							clinician: clinician_id, 
 							question_id: qid,
 							gpt_correct: PerpCorrect, // if lowest perp answer is correct
+							gpt_correct_different: PerpCorrectButDifferent, // if lowest perp answer is correct
 							gpt_correct_group: gpt_correct_group, // the group id of the gpt answer ie max number values
 							group_correct: group, // the label of the group with the correct answers as per clinician - nullable
 							group_correct_raw: JSON.stringify(group_correct_raw),
@@ -221,6 +223,7 @@ export function QuestionWrapper(params: Params) {
 															}}>
 														{perp_answer}</Text>
 												</View>
+												<View style={{flexDirection: "column"}}>
 													<CheckBox 
 														containerStyle={{
 															padding:5, 
@@ -233,6 +236,19 @@ export function QuestionWrapper(params: Params) {
 																setPerpCorrect(!PerpCorrect)
 														}}
 													/>
+													<CheckBox 
+														containerStyle={{
+															padding:5, 
+															borderColor: "red", 
+															borderWidth: perp_answer === params.data.true_answer ? 0 : 3}}
+														checked={PerpCorrectButDifferent} 
+														title="Is it correct, but different from the true answer?" 
+														disabled={perp_answer === params.data.true_answer}
+														onPress={() => {
+																setPerpCorrectButDifferent(!PerpCorrectButDifferent)
+														}}
+													/>
+												</View>
 										</View>
 									  <Text style={{
 												fontWeight:"bold",
