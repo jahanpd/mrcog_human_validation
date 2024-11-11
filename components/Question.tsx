@@ -1,8 +1,9 @@
-import {Alert, Modal, Text, StyleSheet, Pressable, Button, View, ScrollView, Switch} from 'react-native';
+import {Alert, Modal, Text, StyleSheet, Pressable, Button, View, ScrollView, TextInput} from 'react-native';
 import React, {useState, useContext, Dispatch, SetStateAction} from 'react';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CheckBox } from '@rneui/themed';
-
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Dialog } from '@rneui/themed';
 type Data = {
 		question: string,
 		id: string,
@@ -59,6 +60,8 @@ export function QuestionWrapper(params: Params) {
 
 		const perp_correct_init = perp_answer === params.data.true_answer;
 		const [modalVisible, setModalVisible] = useState(false);
+		const [dialogVisible, setDialogVisible] = useState(false);
+		const [note, setNote] = useState("");
 		const [alertVisible, setAlertVisible] = useState(false);
 		const [PerpCorrect, setPerpCorrect] = useState<boolean>(perp_correct_init);
 		const [PerpCorrectButDifferent, setPerpCorrectButDifferent] = useState<boolean>(false);
@@ -143,7 +146,8 @@ export function QuestionWrapper(params: Params) {
 							group_correct_raw: JSON.stringify(group_correct_raw),
 							group_consistent_raw: JSON.stringify(group_consistent_raw),
 							se_clustering_correct: clusterCorrect, // are the groups correctly matched by meaning
-							entailment_success: allUnique
+							entailment_success: allUnique,
+							note: note
 					})
 					.then(res => {
 							console.log(res);
@@ -175,6 +179,37 @@ export function QuestionWrapper(params: Params) {
 				<View style={{
 						flex: 1,
 				}}>
+				{dialogVisible && (
+					<Modal
+						animationType='fade'
+						visible={dialogVisible}
+						>
+						  <View style={{
+									justifyContent:"center",
+									alignItems:"center",
+									height:"100%"
+							}}>
+							<Text style={{padding: 10}}>Explain any concerns you have with this question.</Text>
+							<TextInput 
+								  onChangeText={setNote}
+									value={note}
+								  placeholder="Input response here"
+									multiline={true}
+									style={{
+											height: 150,
+											width: 300,
+											padding: 10,
+											borderWidth: 1
+									}}
+							/>
+							  <Pressable 
+							  onPress={() => setDialogVisible(false)}
+							  style={{padding: 10, margin: 10, borderWidth:1}}> 
+								  <Text> Close </Text>
+								</Pressable>
+							</View>
+					</Modal>)}
+				{modalVisible && (
 				  <Modal
 						animationType="slide"
 						transparent={false}
@@ -200,11 +235,20 @@ export function QuestionWrapper(params: Params) {
 											padding:0
 									}}>
 									  <Text style={{fontWeight:"bold"}}>Question:</Text>
-										<Text
-										  style={{
-													paddingBottom:5
-											}}
-										>{params.data.question}</Text>
+										<View style={{flexDirection:"row"}}>
+												<Text
+													style={{
+															paddingBottom:5
+													}}
+												>{params.data.question}</Text>
+												<Pressable
+												 onPress={() => {
+														 console.log("pressed");
+														 setDialogVisible(true)}}
+												>
+														<Ionicons name={note ? "flag" : "flag-outline"} size={32} color="red" />
+												</Pressable>
+										</View>
 
 									  <Text style={{fontWeight:"bold"}}>The True Answer:</Text>
 										<Text
@@ -386,7 +430,7 @@ export function QuestionWrapper(params: Params) {
 
 
 						  </View>
-					  </Modal>
+					  </Modal>)}
 						<Pressable
 									onPress={() => setModalVisible(!modalVisible)}>
 									<View
