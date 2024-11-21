@@ -156,9 +156,10 @@ export function QuestionWrapper(params: Params) {
 									console.log("check push", params.answered)
 									params.answered.push(qid);
 									params.setFiltered(params.filtered.filter(qn => !params.answered.includes(qn.id)))
-								  setAlertVisible(false);
-								  setModalVisible(!modalVisible);
+								    setAlertVisible(false);
+								    setModalVisible(!modalVisible);
 									setPerpCorrect(false);
+									setNote("");
 									clusters.map(cluster => {
 											cluster.setConsistent(false)
 											cluster.setCorrect(false)
